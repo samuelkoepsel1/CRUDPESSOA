@@ -1,39 +1,52 @@
 package main;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import controller.pessoaController;
+import controller.ContatoController;
+import controller.PessoaController;
 import model.Pessoa;
 
 public class Main {
 
-	public static HashMap<String, Pessoa> pessoas;
+	public static HashMap<String, Pessoa> pessoas = new HashMap<String, Pessoa>();
 
 	public static void main(String[] args) throws IOException {
 		
 		ServerSocket server = new ServerSocket(90);
 		server.setReuseAddress(true);
+		PessoaController controllerPessoa = new PessoaController();
+		ContatoController controllerContato = new ContatoController();
 		
 		while (true) {
 			System.out.println("Aguardado conexão...");
-			try (Socket conn = server.accept();) {
+			try (Socket conn = server.accept();) {				
 				
 				System.out.println("Conectado com: "
 						+ conn.getInetAddress().getHostAddress());
 				
+				InputStream in = conn.getInputStream();
+				
+				byte[] dadosBrutos = new byte[1024];
+				int qtdBytesLidos = in.read(dadosBrutos);
+				String dadosStr = new String(dadosBrutos, 0, qtdBytesLidos);
+				String[] data = dadosStr.split(";");
+				String result;
+				if (data[0].equals("PESSOA")) {
+					result = controllerPessoa.execute(pessoas, data[1], data[2], data[3], data[4]);	
+				} else {
+					result = controllerContato.execute(pessoas, data[1], data[2], data[3], Boolean.parseBoolean(data[4]));
+				}
+				
+				System.out.println(result);
+				
 				OutputStream out = conn.getOutputStream();
-				String msg = "Insira o comando desejado!";
-				out.write(msg.getBytes());
-				String comando = "LIST";
-				String cpf = "00000000000";
-				String nome = "teste";
-				String endereco = "teste"; 
-				pessoaController.execute(pessoas, comando, cpf, nome, endereco);
+				out.write(result.getBytes());
 			}
 		}
 

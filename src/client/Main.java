@@ -2,33 +2,135 @@ package client;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.Scanner;
 
-public class Main {
+import controller.ConexaoCliente;
+import controller.PessoaController;
+import model.Pessoa;
 
+public class Main {
+	
 	public static void main(String[] args) throws IOException {
 		
 		System.out.println("Criando conexão!");
-		try ( Socket conn = new Socket("4.tcp.ngrok.io", 15059);) {
-			
-			System.out.println("Conectado");
-			InputStream in = conn.getInputStream();
-			
-			byte[] dadosBrutos = new byte[1024];
-			int qtdBytesLidos = in.read(dadosBrutos);
-			while (qtdBytesLidos >= 0) {
-				String dadosStr = new String(dadosBrutos, 0, qtdBytesLidos);
-				System.out.println(dadosStr);
-				qtdBytesLidos = in.read(dadosBrutos);
+		
+		boolean keep = true;
+		ConexaoCliente cliente = new ConexaoCliente();
+		String message = "";
+		while (keep) {
+			Scanner data = new Scanner(System.in);
+			System.out.println("Bem vindo ao gereciamento de contatos de pessoas!");
+			System.out.println("Para gerenciar pessoas digite 1 e para gerenciar contatos digite 2.");
+			int process = data.nextInt();
+			if (process  == 1) {
+				System.out.println("Para incluir uma pessoa digite 1; \n" +
+						"Para alterar os dados de uma pessoa digite 2; \n" +
+						"Para buscar os dados de uma pessoa digite 3; \n" +
+						"Para excluir uma pessoa digite 4; \n" +
+						"Para listar todas as pessoas digite 5.");
+				String cpf;
+				String nome;
+				String endereco;
+				int command = data.nextInt();
+				switch (command) {
+					case 1:
+						System.out.println("Digite o cpf da pessoa.");
+						cpf = data.next();
+						System.out.println("Digite o nome da pessoa.");
+						nome = data.next();
+						System.out.println("Digite o endereço da pessoa.");
+						endereco = data.next();
+						message = "PESSOA;INSERT;"+cpf+";"+nome+";"+endereco+";";
+						break;
+					case 2:
+						System.out.println("Digite o cpf da pessoa que deseja alterar.");
+						cpf = data.next();
+						System.out.println("Digite o nome da pessoa.");
+						nome = data.next();
+						System.out.println("Digite o endereço da pessoa.");
+						endereco = data.next();
+						message = "PESSOA;UPDATE;"+cpf+";"+nome+";"+endereco+";";
+						break;
+					case 3:
+						System.out.println("Digite o cpf da pessoa que deseja buscar.");
+						cpf = data.next();
+						nome = " ";
+						endereco = " ";
+						message = "PESSOA;GET;"+cpf+";"+nome+";"+endereco+";";
+						break;
+					case 4:
+						System.out.println("Digite o cpf da pessoa que deseja excluir.");
+						cpf = data.next();
+						nome = " ";
+						endereco = " ";
+						message = "PESSOA;DELETE;"+cpf+";"+nome+";"+endereco+";";
+						break;
+					case 5:
+						cpf = "0";
+						nome = " ";
+						endereco = " ";
+						message = "PESSOA;LIST;"+cpf+";"+nome+";"+endereco+";";
+						break;
+				}
+			} else {System.out.println("Para incluir um contato digite 1; \n" +
+					"Para alterar o contato de uma pessoa digite 2; \n" +
+					"Para buscar os contatos de uma pessoa digite 3; \n" +
+					"Para excluir o contato de uma pessoa digite 4; \n" +
+					"Para listar todos os contatos digite 5.");
+			String cpf;
+			String numero;
+			boolean principal;
+			int command = data.nextInt();
+			switch (command) {
+				case 1:
+					System.out.println("Digite o cpf da pessoa.");
+					cpf = data.next();
+					System.out.println("Digite o número de contato.");
+					numero = data.next();
+					System.out.println("Se for o contato principal digite 1, caso contrário digite 0.");
+					principal = data.next().equals("1") ? true : false;
+					message = "CONTATO;INSERT;"+cpf+";"+numero+";"+principal+";";
+					break;
+				case 2:
+					System.out.println("Digite o cpf da pessoa que deseja alterar.");
+					cpf = data.next();
+					System.out.println("Digite o antigo número que deseja alterar.");
+					numero = data.next();
+					System.out.println("Digite o novo número de contato.");
+					numero += "/"+data.next();
+					System.out.println("Se for o contato principal digite 1, caso contrário digite 0.");
+					principal = data.next().equals("1") ? true : false;
+					message = "CONTATO;UPDATE;"+cpf+";"+numero+";"+principal+";";
+					break;
+				case 3:
+					System.out.println("Digite o cpf da pessoa que deseja buscar.");
+					cpf = data.next();
+					numero = " ";
+					principal = false;
+					message = "CONTATO;GET;"+cpf+";"+numero+";"+principal+";";
+					break;
+				case 4:
+					System.out.println("Digite o cpf da pessoa que deseja excluir o contato.");
+					cpf = data.next();
+					System.out.println("Digite o  número de contato a ser excluído.");
+					numero = data.next();
+					principal = false;
+					message = "CONTATO;DELETE;"+cpf+";"+numero+";"+principal+";";
+					break;
+				case 5:
+					cpf = "0";
+					numero = " ";
+					principal = false;
+					message = "CONTATO;LIST;"+cpf+";"+numero+";"+principal+";";
+					break;
 			}
-			
-		} catch (UnknownHostException e) {
-			System.out.println("Host não encontrado");
-			e.printStackTrace();
+			}
+			cliente.sendData(message);
 		}
-
 	}
 
 }

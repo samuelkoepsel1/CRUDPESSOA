@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Pessoa {
 
 	public String cpf;
@@ -8,13 +11,14 @@ public class Pessoa {
 
 	public String endereco;
 	
-	public Contato[] contato;
+	public HashMap<String, Contato> contato;
 
 	public Pessoa(String cpf, String nome, String endereco) {
 		super();
 		this.cpf = cpf;
 		this.nome = nome;
 		this.endereco = endereco;
+		this.contato = new HashMap<String, Contato>();
 	}
 
 	public String getCpf() {
@@ -41,12 +45,12 @@ public class Pessoa {
 		this.endereco = endereco;
 	}
 
-	public Contato[] getContato() {
-		return contato;
+	public HashMap<String, Contato> getContato() {
+		return this.contato;
 	}
 
-	public void setContato(Contato[] contato) {
-		this.contato = contato;
+	public void setContato(Contato contato) {
+		this.contato.put(contato.getNumero(), contato);
 	}
 
 }

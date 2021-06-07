@@ -2,23 +2,29 @@ package model;
 
 public class Contato {
 	
-	public String tipo;
+	public boolean principal;
 	
-	public int numero;
+	public String numero;
 
-	public String getTipo() {
-		return tipo;
+	public Contato(String numero, boolean principal) {
+		super();
+		this.numero = numero;
+		this.principal = principal;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public boolean isPrincipal() {
+		return principal;
 	}
 
-	public int getNumero() {
+	public void setPrincipal(boolean principal) {
+		this.principal = principal;
+	}
+
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 }

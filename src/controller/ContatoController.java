@@ -5,19 +5,29 @@ import java.util.HashMap;
 import model.Contato;
 import model.Pessoa;
 
-public class PessoaController {
+public class ContatoController {
 	
-	public static String execute(HashMap<String, Pessoa> pessoas, String comando, String cpf, String nome, String endereco) {
+	public static String execute(HashMap<String, Pessoa> pessoas, String comando, String cpf, String numero, boolean principal) {
 		String message = "";
 		switch(comando) {
 			case "INSERT":
-				pessoas.put(cpf, new Pessoa(cpf, nome, endereco));
+				if (pessoas.get(cpf) != null) {
+					pessoas.get(cpf).setContato(new Contato(numero, principal));	
+				} else {
+					message = "Pessoa não encontrada";
+				}
 				break;
 			case "UPDATE":
 				if (pessoas.get(cpf) != null) {
-					pessoas.get(cpf).setNome(nome);
-					pessoas.get(cpf).setEndereco(endereco);
-					message = "Pessoa atualizada com sucesso";
+					boolean find = false;
+					String[] data = numero.split("/");
+					if (pessoas.get(cpf).getContato().get(data[0]) != null) {
+						pessoas.get(cpf).getContato().get(data[0]).setNumero(data[1]);
+						pessoas.get(cpf).getContato().get(data[0]).setPrincipal(principal);
+						message = "Contato atualizado com sucesso";
+					} else {
+						message = "Número não encontrado";	
+					}
 				} else {
 					message = "Pessoa não encontrada";
 				}
@@ -25,7 +35,9 @@ public class PessoaController {
 			case "GET":
 				if (!pessoas.isEmpty()) {
 					if (pessoas.get(cpf) != null) {
-						message = (pessoas.get(cpf).getCpf() + ";" + pessoas.get(cpf).getNome() + ";" + pessoas.get(cpf).getEndereco());
+						message = (pessoas.get(cpf).getCpf() + ";" + pessoas.get(cpf).getNome() + ";" + pessoas.get(cpf).getEndereco() + ";");
+						if (pessoas.get(cpf).getContato() == null) 
+							message = "Sem contatos cadastrados";		
 						for(String key : pessoas.get(cpf).getContato().keySet()) {
 							if (pessoas.get(cpf).getContato().get(key).isPrincipal()) {
 								message += "Contato princiapl: " + pessoas.get(cpf).getContato().get(key).getNumero() + ";";
@@ -43,8 +55,8 @@ public class PessoaController {
 			case "DELETE":
 				if (pessoas != null) {
 					if (pessoas.get(cpf) != null) {
-						pessoas.remove(cpf);
-						message = "Pessoa removida com sucesso";
+						pessoas.get(cpf).getContato().remove(numero);
+						message = "Contato removido com sucesso";
 					} else {
 						message = "Pessoa não encontrada";
 					}
