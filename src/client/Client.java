@@ -12,7 +12,7 @@ import controller.ConexaoCliente;
 import controller.PessoaController;
 import model.Pessoa;
 
-public class Main {
+public class Client {
 	
 	public static void main(String[] args) throws IOException {
 		

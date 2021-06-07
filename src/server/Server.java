@@ -12,7 +12,7 @@ import controller.ContatoController;
 import controller.PessoaController;
 import model.Pessoa;
 
-public class Main {
+public class Server {
 
 	public static HashMap<String, Pessoa> pessoas = new HashMap<String, Pessoa>();
 

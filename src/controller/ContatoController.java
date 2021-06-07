@@ -55,8 +55,12 @@ public class ContatoController {
 			case "DELETE":
 				if (pessoas != null) {
 					if (pessoas.get(cpf) != null) {
-						pessoas.get(cpf).getContato().remove(numero);
-						message = "Contato removido com sucesso";
+						if (pessoas.get(cpf).getContato().get(numero) != null) {
+							pessoas.get(cpf).getContato().remove(numero);
+							message = "Contato removido com sucesso";	
+						} else {
+							message = "Número não encontrado";	
+						}
 					} else {
 						message = "Pessoa não encontrada";
 					}
@@ -66,6 +70,7 @@ public class ContatoController {
 				break;
 			case "LIST":
 				if (!pessoas.isEmpty()) {
+					message = String.valueOf(pessoas.size());
 					for (String key : pessoas.keySet()) {
 						message += (pessoas.get(key).getCpf() + ";" + pessoas.get(key).getNome() + ";" + pessoas.get(key).getEndereco() + ";");
 						if (pessoas.get(key).getContato() != null) {

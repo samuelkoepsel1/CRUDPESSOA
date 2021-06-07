@@ -54,6 +54,7 @@ public class PessoaController {
 				break;
 			case "LIST":
 				if (!pessoas.isEmpty()) {
+					message = String.valueOf(pessoas.size());
 					for (String key : pessoas.keySet()) {
 						message += (pessoas.get(key).getCpf() + ";" + pessoas.get(key).getNome() + ";" + pessoas.get(key).getEndereco() + ";");
 						if (pessoas.get(key).getContato() != null) {
