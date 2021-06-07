@@ -18,7 +18,7 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 		
-		ServerSocket server = new ServerSocket(90);
+		ServerSocket server = new ServerSocket(80);
 		server.setReuseAddress(true);
 		PessoaController controllerPessoa = new PessoaController();
 		ContatoController controllerContato = new ContatoController();

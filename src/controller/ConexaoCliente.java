@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 public class ConexaoCliente {
 	
 	public static void sendData(String data) throws IOException {
-		try ( Socket conn = new Socket("8.tcp.ngrok.io", 17211);) {
+		try ( Socket conn = new Socket("127.0.0.1", 80);) {
 			
 			OutputStream out = conn.getOutputStream();
 			out.write(data.getBytes());

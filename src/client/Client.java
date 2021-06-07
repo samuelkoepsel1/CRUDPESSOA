@@ -38,38 +38,43 @@ public class Client {
 				int command = data.nextInt();
 				switch (command) {
 					case 1:
+						data.nextLine();
 						System.out.println("Digite o cpf da pessoa.");
-						cpf = data.next();
+						cpf = data.nextLine();
 						System.out.println("Digite o nome da pessoa.");
-						nome = data.next();
+						nome = data.nextLine();
 						System.out.println("Digite o endereço da pessoa.");
-						endereco = data.next();
+						endereco = data.nextLine();
 						message = "PESSOA;INSERT;"+cpf+";"+nome+";"+endereco+";";
 						break;
 					case 2:
+						data.nextLine();
 						System.out.println("Digite o cpf da pessoa que deseja alterar.");
-						cpf = data.next();
+						cpf = data.nextLine();
 						System.out.println("Digite o nome da pessoa.");
-						nome = data.next();
+						nome = data.nextLine();
 						System.out.println("Digite o endereço da pessoa.");
-						endereco = data.next();
+						endereco = data.nextLine();
 						message = "PESSOA;UPDATE;"+cpf+";"+nome+";"+endereco+";";
 						break;
 					case 3:
+						data.nextLine();
 						System.out.println("Digite o cpf da pessoa que deseja buscar.");
-						cpf = data.next();
+						cpf = data.nextLine();
 						nome = " ";
 						endereco = " ";
 						message = "PESSOA;GET;"+cpf+";"+nome+";"+endereco+";";
 						break;
 					case 4:
+						data.nextLine();
 						System.out.println("Digite o cpf da pessoa que deseja excluir.");
-						cpf = data.next();
+						cpf = data.nextLine();
 						nome = " ";
 						endereco = " ";
 						message = "PESSOA;DELETE;"+cpf+";"+nome+";"+endereco+";";
 						break;
 					case 5:
+						data.nextLine();
 						cpf = "0";
 						nome = " ";
 						endereco = " ";
@@ -87,41 +92,46 @@ public class Client {
 			int command = data.nextInt();
 			switch (command) {
 				case 1:
+					data.nextLine();
 					System.out.println("Digite o cpf da pessoa.");
-					cpf = data.next();
+					cpf = data.nextLine();
 					System.out.println("Digite o número de contato.");
-					numero = data.next();
+					numero = data.nextLine();
 					System.out.println("Se for o contato principal digite 1, caso contrário digite 0.");
-					principal = data.next().equals("1") ? true : false;
+					principal = data.nextLine().equals("1") ? true : false;
 					message = "CONTATO;INSERT;"+cpf+";"+numero+";"+principal+";";
 					break;
 				case 2:
+					data.nextLine();
 					System.out.println("Digite o cpf da pessoa que deseja alterar.");
-					cpf = data.next();
+					cpf = data.nextLine();
 					System.out.println("Digite o antigo número que deseja alterar.");
-					numero = data.next();
+					numero = data.nextLine();
 					System.out.println("Digite o novo número de contato.");
-					numero += "/"+data.next();
+					numero += "/"+data.nextLine();
 					System.out.println("Se for o contato principal digite 1, caso contrário digite 0.");
-					principal = data.next().equals("1") ? true : false;
+					principal = data.nextLine().equals("1") ? true : false;
 					message = "CONTATO;UPDATE;"+cpf+";"+numero+";"+principal+";";
 					break;
 				case 3:
+					data.nextLine();
 					System.out.println("Digite o cpf da pessoa que deseja buscar.");
-					cpf = data.next();
+					cpf = data.nextLine();
 					numero = " ";
 					principal = false;
 					message = "CONTATO;GET;"+cpf+";"+numero+";"+principal+";";
 					break;
 				case 4:
+					data.nextLine();
 					System.out.println("Digite o cpf da pessoa que deseja excluir o contato.");
-					cpf = data.next();
+					cpf = data.nextLine();
 					System.out.println("Digite o  número de contato a ser excluído.");
-					numero = data.next();
+					numero = data.nextLine();
 					principal = false;
 					message = "CONTATO;DELETE;"+cpf+";"+numero+";"+principal+";";
 					break;
 				case 5:
+					data.nextLine();
 					cpf = "0";
 					numero = " ";
 					principal = false;
